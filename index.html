@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jeu de Mémoire</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <h1>Jeu de Mémoire</h1>
+    <div class="info-container">
+        <div class="info-item">Coups: <span id="moves-count">0</span></div>
+        <div class="info-item">Temps: <span id="timer">0s</span></div>
+    </div>
+
+    <div class="game-container">
+        </div>
+
+    <button id="restart-btn">Recommencer</button>
+
+    <audio id="flip-sound" src="sounds/flip.mp3"></audio>
+    <audio id="match-sound" src="sounds/match.mp3"></audio>
+    <audio id="unmatch-sound" src="sounds/unmatch.mp3"></audio>
+    <audio id="win-sound" src="sounds/win.mp3"></audio>
+
+    <script src="script.js"></script>
+</body>
+</html>
