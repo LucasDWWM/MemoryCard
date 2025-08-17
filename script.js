@@ -1,5 +1,3 @@
-// script.js
-
 document.addEventListener('DOMContentLoaded', () => {
     const gameContainer = document.querySelector('.game-container');
     const movesCountEl = document.getElementById('moves-count');
@@ -126,9 +124,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (matchedPairs === baseImages.length) {
             if (winSound) winSound.play();
             clearInterval(timerInterval);
-            setTimeout(() => {
-                alert(`Félicitations ! Vous avez gagné en ${time} secondes et ${moves} coups !`);
-            }, 500);
+            
+            // Révéler le texte de victoire
+            setTimeout(revealWinText, 500);
         }
     }
 
@@ -147,6 +145,33 @@ document.addEventListener('DOMContentLoaded', () => {
         [firstCard, secondCard, lockBoard] = [null, null, false];
     }
     
+    // Fonction pour révéler le texte de victoire sur les cartes
+    function revealWinText() {
+        const cards = document.querySelectorAll('.card');
+        const winText = "Je t'aime ❤️";
+        const gridColumns = 8; // Assurez-vous que cela corresponde à votre CSS
+        const totalCards = cards.length;
+
+        cards.forEach((card, index) => {
+            // Calculer le délai pour un effet de vague
+            const row = Math.floor(index / gridColumns);
+            const col = index % gridColumns;
+            const delay = (row + col) * 50; // Ajustez cette valeur si nécessaire
+
+            // S'assurer que la carte est retournée
+            card.classList.add('flipped');
+            
+            // Trouver la face avant pour y mettre le texte
+            const cardFront = card.querySelector('.card-front');
+            
+            // Retirer l'image et y mettre le texte
+            cardFront.innerHTML = `<p>${winText}</p>`;
+            cardFront.classList.add('win-text');
+            
+            card.style.transitionDelay = `${delay}ms`;
+        });
+    }
+
     // Gérer le bouton de redémarrage
     restartBtn.addEventListener('click', () => {
         initGame();
