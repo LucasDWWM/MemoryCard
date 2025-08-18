@@ -3,6 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const movesCountEl = document.getElementById('moves-count');
     const timerEl = document.getElementById('timer');
     const restartBtn = document.getElementById('restart-btn');
+    
+    // Nouveaux éléments
+    const winMessageEl = document.getElementById('win-message');
 
     // Sons
     const flipSound = document.getElementById('flip-sound');
@@ -33,9 +36,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fonction pour initialiser/réinitialiser le jeu
     function initGame() {
         gameContainer.innerHTML = '';
+        winMessageEl.classList.add('hidden'); // Cache le message de victoire
         
-        // Déterminer le nombre de cartes à utiliser en fonction de la taille de l'écran
-        const cardsToUse = window.innerWidth <= 768 ? 28 : 56; // 28 cartes pour mobile, 56 pour ordinateur
+        const cardsToUse = window.innerWidth <= 768 ? 28 : 56;
         const gameImages = baseImages.slice(0, cardsToUse / 2);
         const allCards = [...gameImages, ...gameImages];
         shuffledCards = allCards.sort(() => Math.random() - 0.5);
@@ -123,12 +126,15 @@ document.addEventListener('DOMContentLoaded', () => {
         resetBoard();
         matchedPairs++;
 
-        const cardsToUse = window.innerWidth <= 768 ? 32 : 56;
+        const cardsToUse = window.innerWidth <= 768 ? 28 : 56;
         if (matchedPairs === cardsToUse / 2) {
             if (winSound) winSound.play();
             clearInterval(timerInterval);
             
-            setTimeout(revealWinText, 500);
+            // Afficher le message de victoire
+            if (window.innerWidth <= 768) {
+                winMessageEl.classList.remove('hidden');
+            }
         }
     }
 
@@ -147,39 +153,6 @@ document.addEventListener('DOMContentLoaded', () => {
         [firstCard, secondCard, lockBoard] = [null, null, false];
     }
     
-    // Fonction pour révéler le texte de victoire sur les cartes
-    function revealWinText() {
-        const cards = document.querySelectorAll('.card');
-        let winText;
-
-        const isMobile = window.innerWidth <= 768;
-        if (isMobile) {
-            winText = "BIENJOUE!"; // Message plus court pour mobile (11 caractères)
-        } else {
-            winText = "BRAVO!";
-        }
-        
-        const totalCards = cards.length;
-        if (winText.length < totalCards) {
-            console.warn("Le message de victoire est plus court que le nombre de cartes. Il sera répété.");
-        }
-
-        cards.forEach((card, index) => {
-            const letter = winText[index % winText.length];
-            const cardFront = card.querySelector('.card-front');
-            
-            cardFront.innerHTML = `<p>${letter}</p>`;
-            cardFront.classList.add('win-text');
-            card.classList.add('flipped');
-            
-            if (isMobile) {
-                card.classList.add('final-text-card-mobile');
-            } else {
-                card.classList.add('final-text-card');
-            }
-        });
-    }
-
     // Gérer le bouton de redémarrage
     restartBtn.addEventListener('click', () => {
         initGame();

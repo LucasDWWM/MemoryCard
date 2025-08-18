@@ -90,31 +90,30 @@ h1 {
     font-weight: bold;
 }
 
-.card.final-text-card {
-    border: none;
-    box-shadow: none;
-}
-
-.card.final-text-card .card-face {
-    border: none;
-    box-shadow: none;
-}
-
-.card-face.win-text {
-    background-color: #f0f0f0;
-    color: #FF69B4;
-    font-size: 1.8em;
-    font-weight: bold;
-    text-shadow: none;
-    transform: rotateY(180deg);
-    padding: 10px;
-    box-sizing: border-box;
+/* Styles pour le message de victoire */
+#win-message {
+    background-color: #4CAF50;
+    color: white;
+    padding: 15px 30px;
+    border-radius: 10px;
     text-align: center;
-    line-height: 1;
+    font-size: 1.5em;
+    font-weight: bold;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    position: fixed; /* Reste visible même en scrollant */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+
+/* Classe pour cacher le message */
+.hidden {
+    display: none;
 }
 
 /* ----------------------------------------------------------------------------------------------------- */
-/* MEDIA QUERIES POUR MOBILE                                        */
+/* MEDIA QUERIES POUR MOBILE                                                                             */
 /* ----------------------------------------------------------------------------------------------------- */
 
 @media (max-width: 768px) {
