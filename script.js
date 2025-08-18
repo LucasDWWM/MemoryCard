@@ -21,9 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
         'dessin25.png', 'dessin26.png', 'dessin27.png', 'dessin28.png',
     ];
 
-    // Crée la liste de 56 cartes pour le jeu
-    const allCards = [...baseImages, ...baseImages];
-
     let shuffledCards;
     let firstCard = null;
     let secondCard = null;
@@ -36,8 +33,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fonction pour initialiser/réinitialiser le jeu
     function initGame() {
         gameContainer.innerHTML = '';
-        shuffledCards = allCards.sort(() => Math.random() - 0.5);
         
+        // Déterminer le nombre de cartes à utiliser en fonction de la taille de l'écran
+        const cardsToUse = window.innerWidth <= 768 ? 28 : 56; // 28 cartes pour mobile, 56 pour ordinateur
+        const gameImages = baseImages.slice(0, cardsToUse / 2);
+        const allCards = [...gameImages, ...gameImages];
+        shuffledCards = allCards.sort(() => Math.random() - 0.5);
+
         firstCard = null;
         secondCard = null;
         lockBoard = false;
@@ -121,7 +123,8 @@ document.addEventListener('DOMContentLoaded', () => {
         resetBoard();
         matchedPairs++;
 
-        if (matchedPairs === baseImages.length) {
+        const cardsToUse = window.innerWidth <= 768 ? 32 : 56;
+        if (matchedPairs === cardsToUse / 2) {
             if (winSound) winSound.play();
             clearInterval(timerInterval);
             
@@ -147,11 +150,16 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fonction pour révéler le texte de victoire sur les cartes
     function revealWinText() {
         const cards = document.querySelectorAll('.card');
-        // Le message à afficher
-        const winText = "BIENJOUE"; 
-        const totalCards = cards.length;
+        let winText;
 
-        // On peut s'assurer que le message est assez long, sinon il se répétera
+        const isMobile = window.innerWidth <= 768;
+        if (isMobile) {
+            winText = "BIENJOUE!"; // Message plus court pour mobile (11 caractères)
+        } else {
+            winText = "BRAVO!";
+        }
+        
+        const totalCards = cards.length;
         if (winText.length < totalCards) {
             console.warn("Le message de victoire est plus court que le nombre de cartes. Il sera répété.");
         }
@@ -160,12 +168,15 @@ document.addEventListener('DOMContentLoaded', () => {
             const letter = winText[index % winText.length];
             const cardFront = card.querySelector('.card-front');
             
-            // Retirer le contenu précédent (l'image)
             cardFront.innerHTML = `<p>${letter}</p>`;
-            // Ajouter la classe pour le style du texte
             cardFront.classList.add('win-text');
-            // Retourner la carte
             card.classList.add('flipped');
+            
+            if (isMobile) {
+                card.classList.add('final-text-card-mobile');
+            } else {
+                card.classList.add('final-text-card');
+            }
         });
     }
 
@@ -174,6 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         initGame();
     });
 
-    // Lancer le jeu au chargement de la page
+    // Lancer le jeu au chargement de la page et ajuster en cas de redimensionnement
     initGame();
+    window.addEventListener('resize', initGame);
 });

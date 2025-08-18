@@ -90,7 +90,6 @@ h1 {
     font-weight: bold;
 }
 
-/* Style pour les cartes lorsque le texte de victoire est affiché */
 .card.final-text-card {
     border: none;
     box-shadow: none;
@@ -101,7 +100,6 @@ h1 {
     box-shadow: none;
 }
 
-/* Nouveau style pour le texte de victoire sur les cartes */
 .card-face.win-text {
     background-color: #f0f0f0;
     color: #FF69B4;
@@ -113,4 +111,45 @@ h1 {
     box-sizing: border-box;
     text-align: center;
     line-height: 1;
+}
+
+/* ----------------------------------------------------------------------------------------------------- */
+/* MEDIA QUERIES POUR MOBILE                                        */
+/* ----------------------------------------------------------------------------------------------------- */
+
+@media (max-width: 768px) {
+    h1 {
+        font-size: 1.5em;
+    }
+
+    .info-container {
+        width: 100%;
+        font-size: 1em;
+        padding: 0 10px;
+        box-sizing: border-box;
+    }
+
+    .game-container {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 5px;
+        max-width: 95%;
+    }
+
+    .card {
+        width: 70px;
+        height: 70px;
+    }
+
+    .card-face {
+        font-size: 1.5em;
+    }
+    
+    .card-face.win-text {
+        font-size: 1.2em;
+    }
+
+    #restart-btn {
+        padding: 8px 15px;
+        font-size: 0.9em;
+    }
 }
