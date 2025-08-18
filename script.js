@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     // Crée la liste de 56 cartes pour le jeu
-    const allCards = [...baseImages, ...baseImages]; 
+    const allCards = [...baseImages, ...baseImages];
 
     let shuffledCards;
     let firstCard = null;
@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fonction pour initialiser/réinitialiser le jeu
     function initGame() {
-        gameContainer.innerHTML = ''; // Nettoyer le plateau
+        gameContainer.innerHTML = '';
         shuffledCards = allCards.sort(() => Math.random() - 0.5);
         
         firstCard = null;
@@ -86,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (this === firstCard) return;
 
         this.classList.add('flipped');
-        if (flipSound) flipSound.play(); 
+        if (flipSound) flipSound.play();
 
         if (!firstCard) {
             firstCard = this;
@@ -125,7 +125,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (winSound) winSound.play();
             clearInterval(timerInterval);
             
-            // Révéler le texte de victoire
             setTimeout(revealWinText, 500);
         }
     }
@@ -148,27 +147,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // Fonction pour révéler le texte de victoire sur les cartes
     function revealWinText() {
         const cards = document.querySelectorAll('.card');
-        const winText = "Je t'aime ❤️";
-        const gridColumns = 8; // Assurez-vous que cela corresponde à votre CSS
+        // Le message à afficher
+        const winText = "BIENJOUE"; 
         const totalCards = cards.length;
 
-        cards.forEach((card, index) => {
-            // Calculer le délai pour un effet de vague
-            const row = Math.floor(index / gridColumns);
-            const col = index % gridColumns;
-            const delay = (row + col) * 50; // Ajustez cette valeur si nécessaire
+        // On peut s'assurer que le message est assez long, sinon il se répétera
+        if (winText.length < totalCards) {
+            console.warn("Le message de victoire est plus court que le nombre de cartes. Il sera répété.");
+        }
 
-            // S'assurer que la carte est retournée
-            card.classList.add('flipped');
-            
-            // Trouver la face avant pour y mettre le texte
+        cards.forEach((card, index) => {
+            const letter = winText[index % winText.length];
             const cardFront = card.querySelector('.card-front');
             
-            // Retirer l'image et y mettre le texte
-            cardFront.innerHTML = `<p>${winText}</p>`;
+            // Retirer le contenu précédent (l'image)
+            cardFront.innerHTML = `<p>${letter}</p>`;
+            // Ajouter la classe pour le style du texte
             cardFront.classList.add('win-text');
-            
-            card.style.transitionDelay = `${delay}ms`;
+            // Retourner la carte
+            card.classList.add('flipped');
         });
     }
 
